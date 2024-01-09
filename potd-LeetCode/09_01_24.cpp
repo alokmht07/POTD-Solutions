@@ -1,16 +1,23 @@
 class Solution {
 public:
-    int maxWidthOfVerticalArea(vector<vector<int>>& points) {
-    set<int> s;
-    int res = 0;
-    for (auto i : points)
-    {
-        s.insert(i[0]);
+    bool leafSimilar(TreeNode* root1, TreeNode* root2) {
+        vector<int> nodeList_root1, nodeList_root2;
+        findLeaf_dfs(root1, nodeList_root1);
+        findLeaf_dfs(root2, nodeList_root2);
+        return nodeList_root1 == nodeList_root2;
     }
-    for (auto it = next(begin(s)); it != end(s); ++it)
-    {
-        res = max(res, *it - *prev(it));
-    }
-    return res;
+
+    void findLeaf_dfs(TreeNode* nodeNow, std::vector<int>& nodeList) {
+        if (!nodeNow) {
+            return;
+        }
+
+        if (!nodeNow->left && !nodeNow->right) {
+            nodeList.push_back(nodeNow->val);
+            return;
+        }
+
+        findLeaf_dfs(nodeNow->left, nodeList);
+        findLeaf_dfs(nodeNow->right, nodeList);
     }
 };
